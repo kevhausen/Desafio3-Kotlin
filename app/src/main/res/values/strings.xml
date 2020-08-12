@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Desafio3</string>
+    <string name="filtrar">FILTRAR LAS CONDES</string>
+    <string name="no_filtrar">LISTA SIN FILTRAR</string>
+</resources>
