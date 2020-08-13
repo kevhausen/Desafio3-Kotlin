@@ -7,52 +7,57 @@ import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.lista_ciclovia.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var rView: RecyclerView
+    private var cAdapter: CicloAdapter?=null
+    private lateinit var layoutMnger: RecyclerView.LayoutManager
+    private lateinit var mDataset: MutableList<Ciclovia>
 
-    //declarar nuestra dataset,recyclerview,layout,adapter
-
-    private lateinit var rView:RecyclerView
-    private lateinit var cAdapter:CicloAdapter
-    private lateinit var layoutMnger:RecyclerView.LayoutManager
-    private lateinit var mDataset:MutableList<Ciclovia>
+    fun updateLista(lista:MutableList<Ciclovia>){
+        rView.adapter=CicloAdapter(lista)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //instanciar y enlazar botones con layout
-        //hacer logica de botones(puede ser con streams, no se si tiene kotlin)
-        //
 
-        val filtrarCondes :Button=findViewById(R.id.button)
-        val noFiltrar :Button=findViewById(R.id.button2)
+        val botonFiltrar: Button = findViewById(R.id.button)
+        val botonSinFiltrar: Button = findViewById(R.id.button2)
 
+        layoutMnger = LinearLayoutManager(this)
+        mDataset = SetupCiclovias().init() as MutableList<Ciclovia>
+        cAdapter = CicloAdapter(mDataset)
+        rView = findViewById(R.id.recyclerView)
+        rView.adapter = cAdapter
+        rView.layoutManager = layoutMnger
 
+        val mComunas = mDataset.filter { n -> n.comuna.equals("Las Condes") } as MutableList<Ciclovia>
+        Log.d("prueba", mComunas.toString())
 
+        val click=View.OnClickListener {
+            view-> when(view.id){
+            R.id.button-> updateLista(mComunas)
+            R.id.button2->updateLista(mDataset)
+        }
 
+        }
+        botonFiltrar.setOnClickListener(click)
+        botonSinFiltrar.setOnClickListener(click)
 
-        layoutMnger= LinearLayoutManager(this)
-        mDataset=SetupCiclovias().init() as MutableList<Ciclovia>
-        cAdapter=CicloAdapter(mDataset)
-        rView=findViewById(R.id.recyclerView)
-        rView.adapter=cAdapter
-        rView.layoutManager=layoutMnger
+        //ESTO SIRVE PARA DESAFIO4
 
-
-        filtrarCondes.setOnClickListener(View.OnClickListener {
-            when (mDataset){
-                //reccorer lista para comparar comunas con "las condes"
-                //val filtroCondes =mDataset.filter { comuna -> comuna.equals("Las Condes") }
-            }
-
-        })
-
-
-
-       // Log.d("desafio",SetupCiclovias().initDani().toString())
-
-
+        /*botonFiltrar.setOnClickListener {
+            val mComunas = mDataset.filter { n -> n.comuna.equals("Las Condes") } as MutableList<Ciclovia>
+            mDataset=mComunas
+            updateLista()
+            Log.d("prueba",mDataset.toString())
+        }
+        botonSinFiltrar.setOnClickListener {
+            mDataset = SetupCiclovias().init() as MutableList<Ciclovia>
+            updateLista()
+        }
+        */
 
     }
 }

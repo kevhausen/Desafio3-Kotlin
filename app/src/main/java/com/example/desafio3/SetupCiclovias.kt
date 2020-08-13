@@ -2,9 +2,6 @@ package com.example.desafio3
 
 import java.util.*
 
-/**
- * Created by ciromine on 8/26/19.
- */
 class SetupCiclovias {
     private val nombres = arrayOf(
         "Ciclovia 1",
@@ -39,8 +36,5 @@ class SetupCiclovias {
         }
         return lista
     }
-
-    fun initDani():List<Ciclovia>{
-        return nombres.zip(comunas) as List<Ciclovia>
-    }
+    
 }
